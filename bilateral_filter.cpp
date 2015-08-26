@@ -54,7 +54,7 @@ std::vector<long double> bilater_filter1d(std::vector<long double>&ts, long doub
 	int ts_len = ts.size();
     long double ts_mean =  ts_sum / (long double)ts_len;
     long double ts_stdv = calculate_stdv(ts, ts_mean);
-	long double spacial_range_sigma = ts_stdv * (spacial_range_sigma_factor+1);
+	long double spacial_range_sigma = spacial_range_sigma_factor+1;
 	int window_size = (int)std::ceil(2.5*spacial_range_sigma);
 	std::vector<long double> bilater_filter1d_data(ts.size(),0.0);
 
