@@ -39,7 +39,7 @@ long double calculate_stdv(std::vector<long double>& v, long double& _mean){
 }
 
 
-std::vector<long double> bilater_filter1d(std::vector<long double>&ts, long double& color_range_sigma, int& spacial_range_sigma_factor, std::string& wrap){
+std::vector<long double> bilateral_filter1d(std::vector<long double>&ts, long double& color_range_sigma, int& spacial_range_sigma_factor, std::string& wrap){
 	long double ts_min = (long double)std::numeric_limits<int>::max();
 	long double ts_max = (long double)std::numeric_limits<int>::min();
 	for(int i =0;i<ts.size();++i){
@@ -88,8 +88,8 @@ std::vector<long double> bilater_filter1d(std::vector<long double>&ts, long doub
 		}
 
 		for(int j=0;j<w_ts.size();++j){
-			long double ts_c = (ts[i]-ts_stdv)/(ts_stdv);
-			long double w_ts_c = (w_ts[j]-ts_stdv)/(ts_stdv);
+			long double ts_c = (ts[i]-ts_mean)/(ts_stdv);
+			long double w_ts_c = (w_ts[j]-ts_mean)/(ts_stdv);
 
 			long double fs_d = (std::sqrt(std::pow((w_ts_c- ts_c), 2)+ std::pow((((j-window_size)/(long double)window_size)), 2)));
 			long double fs = gaussian_weight(color_range_sigma, fs_d);
@@ -116,7 +116,7 @@ int main(int argc, char *argv[]){
 			int spacial_range_sigma_factor = i;
 			std::string wrap = "reflect";
 
-			std::vector<long double> bf1d = bilater_filter1d(time_series, color_range_sigma, spacial_range_sigma_factor, wrap);
+			std::vector<long double> bf1d = bilateral_filter1d(time_series, color_range_sigma, spacial_range_sigma_factor, wrap);
 			std::cout.precision(12);
 			for (auto it = bf1d.begin(); it != bf1d.end(); ++it)
 				std::cout << *it << ",";
