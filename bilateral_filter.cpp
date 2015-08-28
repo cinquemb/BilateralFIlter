@@ -48,7 +48,8 @@ std::vector<long double> bilateral_filter1d(std::vector<long double>&ts, long do
 		if(ts_max < ts[i])
 			ts_max = ts[i];
 	}
-
+	std::transform(ts.begin(), ts.end(), ts.begin(), std::bind1st(std::multiplies<double>(),std::abs(1/ts_min)));
+	
 	long double normalize_color_denom = ts_max-ts_min;
 	long double ts_sum = std::accumulate(ts.begin(), ts.end(), 0.0);
 	int ts_len = ts.size();
@@ -104,6 +105,7 @@ std::vector<long double> bilateral_filter1d(std::vector<long double>&ts, long do
 		long double filtered_val = (numerator_sum/denominator_sum);
 		bilater_filter1d_data[i] += filtered_val;
 	}
+	std::transform(bilater_filter1d_data.begin(), bilater_filter1d_data.end(), bilater_filter1d_data.begin(), std::bind1st(std::multiplies<double>(),std::abs(ts_min)));
 	return bilater_filter1d_data;
 }
 
