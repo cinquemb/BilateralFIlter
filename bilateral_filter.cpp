@@ -64,21 +64,17 @@ std::vector<long double> bilateral_filter1d(std::vector<long double>&ts, long do
 		long double denominator_sum = 0.0;
 		int window_range = (window_size*2)+1;
 		std::vector<long double> w_ts(window_range,0);
-		
-		if(wrap == "reflect"){
-			for(int j=0;j<w_ts.size();++j){
+
+		for(int j=0;j<w_ts.size();++j){
+			if(wrap == "reflect"){
 				int w_index = mod(i+(j-window_size), ts_len);
 				w_ts[j] = ts[w_index];
-			}
-		}else if(wrap == "constant"){
-			for(int j=0; j<w_ts.size(); ++j){
+			}else if(wrap == "constant"){
 				if((i+(j-window_size) < ts_len) && (i+(j-window_size) > -1))
 					w_ts[j] = ts[(i+(j-window_size))];
 				else
 					w_ts[j] = 0;
-			}
-		}else if(wrap == "edge"){
-			for(int j=0; j<w_ts.size(); ++j){
+			}else if(wrap == "edge"){
 				if((i+(j-window_size) < ts_len) && (i+(j-window_size) > -1))
 					w_ts[j] = ts[(i+(j-window_size))];
 				else if((i+(j-window_size) < 0))
@@ -86,9 +82,7 @@ std::vector<long double> bilateral_filter1d(std::vector<long double>&ts, long do
 				else if((i+(j-window_size) >= ts_len))
 					w_ts[j] = ts[ts_len-1];
 			}
-		}
 
-		for(int j=0;j<w_ts.size();++j){
 			long double ts_c = (ts[i]-ts_mean)/(ts_stdv);
 			long double w_ts_c = (w_ts[j]-ts_mean)/(ts_stdv);
 
